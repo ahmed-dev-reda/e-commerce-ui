@@ -67,7 +67,7 @@ export default function Categories() {
     router.push(`${pathname}?${params.toString()}`, { scroll: false });
   };
   return (
-    <nav className="grid xl:grid-cols-8 md:grid-cols-6 sm:grid-cols-4 bg-gray-200 gap-4 p-2 rounded">
+    <nav className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-2 bg-gray-100 p-2 rounded-lg mb-4 text-sm">
       {categories.map((category) => (
         <Button
           key={category.slug}

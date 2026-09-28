@@ -3,6 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import SiteHeader from "@/components/layout/site-header";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/sonner";
+import Footer from "@/components/layout/footer";
+import StoreProvider from "@/provider/ReduxProvider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -22,8 +25,19 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={cn("h-full", "antialiased", "font-sans", inter.variable)}
     >
       <body className="min-h-full px-4">
-        <SiteHeader />
-        <main className="container mx-auto ">{children}</main>
+        <StoreProvider>
+          <SiteHeader />
+          <main className="container mx-auto ">{children}</main>
+        </StoreProvider>
+        <Footer />
+        <Toaster
+          position="bottom-right"
+          toastOptions={{
+            classNames: {
+              toast: "animate-in slide-in-from-right-full",
+            },
+          }}
+        />
       </body>
     </html>
   );
