@@ -4,13 +4,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { ArrowRight, CreditCard } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { motion } from "motion/react";
 
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import { paymentSchema } from "@/data/schemas";
 import { resetCart } from "@/lib/features/cart/cart";
-import { motion } from "motion/react";
 
 type PaymentFormData = z.infer<typeof paymentSchema>;
 
@@ -30,9 +30,11 @@ export default function PaymentMethod() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    setValue,
+    formState: { errors, isSubmitting, isValid },
   } = useForm<PaymentFormData>({
     resolver: zodResolver(paymentSchema),
+    mode: "onChange",
     defaultValues: {
       cardName: "",
       cardNumber: "",
@@ -51,32 +53,34 @@ export default function PaymentMethod() {
     });
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
+
     dispatch(resetCart());
+
     router.push("/cart?step=completed");
   };
 
   return (
     <motion.section
       initial={{ opacity: 0, y: -30 }}
-      animate={{ opacity: 100, y: 0 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="w-full border border-gray-200 rounded-2xl shadow-lg overflow-hidden flex-1"
+      className="w-full flex-1 overflow-hidden rounded-2xl border border-gray-200 shadow-lg"
     >
-      <div className="p-5 border-b">
+      <div className="border-b p-5">
         <div className="flex items-center gap-2">
           <CreditCard size={20} />
 
           <div>
             <h2 className="font-semibold">Payment Method</h2>
 
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="mt-1 text-sm text-gray-500">
               Enter your card details to complete your order.
             </p>
           </div>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="p-5 sm:p-6 space-y-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 p-5 sm:p-6">
         {/* Cardholder Name */}
         <div className="space-y-2">
           <label htmlFor="cardName" className="text-sm font-medium">
@@ -88,13 +92,15 @@ export default function PaymentMethod() {
             type="text"
             placeholder="John Doe"
             {...register("cardName")}
-            className={`w-full h-11 px-3 border rounded-xl outline-none text-sm transition focus:border-black ${
+            className={`h-11 w-full rounded-xl border px-3 text-sm outline-none transition focus:border-black ${
               errors.cardName ? "border-red-500" : "border-gray-200"
             }`}
           />
 
           {errors.cardName && (
-            <p className="text-xs text-red-500">{errors.cardName.message}</p>
+            <p className="text-xs text-red-500">
+              {errors.cardName.message}
+            </p>
           )}
         </div>
 
@@ -118,15 +124,20 @@ export default function PaymentMethod() {
                 .replace(/(.{4})/g, "$1 ")
                 .trim();
 
-              e.target.value = value;
+              setValue("cardNumber", value, {
+                shouldValidate: true,
+                shouldDirty: true,
+              });
             }}
-            className={`w-full h-11 px-3 border rounded-xl outline-none text-sm tracking-wider transition focus:border-black ${
+            className={`h-11 w-full rounded-xl border px-3 text-sm tracking-wider outline-none transition focus:border-black ${
               errors.cardNumber ? "border-red-500" : "border-gray-200"
             }`}
           />
 
           {errors.cardNumber && (
-            <p className="text-xs text-red-500">{errors.cardNumber.message}</p>
+            <p className="text-xs text-red-500">
+              {errors.cardNumber.message}
+            </p>
           )}
         </div>
 
@@ -146,15 +157,18 @@ export default function PaymentMethod() {
               placeholder="MM/YY"
               {...register("expiryDate")}
               onChange={(e) => {
-                let value = e.target.value.replace(/\D/g, "");
+                let value = e.target.value.replace(/\D/g, "").slice(0, 4);
 
                 if (value.length > 2) {
-                  value = `${value.slice(0, 2)}/${value.slice(2, 4)}`;
+                  value = `${value.slice(0, 2)}/${value.slice(2)}`;
                 }
 
-                e.target.value = value;
+                setValue("expiryDate", value, {
+                  shouldValidate: true,
+                  shouldDirty: true,
+                });
               }}
-              className={`w-full h-11 px-3 border rounded-xl outline-none text-sm transition focus:border-black ${
+              className={`h-11 w-full rounded-xl border px-3 text-sm outline-none transition focus:border-black ${
                 errors.expiryDate ? "border-red-500" : "border-gray-200"
               }`}
             />
@@ -180,9 +194,16 @@ export default function PaymentMethod() {
               placeholder="123"
               {...register("cvv")}
               onChange={(e) => {
-                e.target.value = e.target.value.replace(/\D/g, "").slice(0, 4);
+                const value = e.target.value
+                  .replace(/\D/g, "")
+                  .slice(0, 4);
+
+                setValue("cvv", value, {
+                  shouldValidate: true,
+                  shouldDirty: true,
+                });
               }}
-              className={`w-full h-11 px-3 border rounded-xl outline-none text-sm transition focus:border-black ${
+              className={`h-11 w-full rounded-xl border px-3 text-sm outline-none transition focus:border-black ${
                 errors.cvv ? "border-red-500" : "border-gray-200"
               }`}
             />
@@ -194,13 +215,13 @@ export default function PaymentMethod() {
         </div>
 
         {/* Buttons */}
-        <div className="flex flex-col-reverse sm:flex-row gap-3 pt-2">
+        <div className="flex flex-col-reverse gap-3 pt-2 sm:flex-row">
           <Button
             type="submit"
-            disabled={isSubmitting}
-            className="flex-1 rounded-2xl bg-black text-white hover:bg-gray-800"
+            disabled={!isValid || isSubmitting}
+            className="flex-1 rounded-2xl bg-black text-white hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Place Order
+            {isSubmitting ? "Processing..." : "Place Order"}
             <ArrowRight size={16} />
           </Button>
         </div>
