@@ -2,6 +2,7 @@ import { products } from "@/data/temporaryData";
 import Categories from "./categories";
 import ProductCard from "./product-card";
 import { Suspense } from "react";
+import Spinner from "./spinner";
 
 export default function ProductsList() {
   return (
@@ -9,11 +10,13 @@ export default function ProductsList() {
       <Suspense fallback={null}>
         <Categories />
       </Suspense>
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-12">
-        {products.map((product) => (
-          <ProductCard product={product} key={product.id} />
-        ))}
-      </div>
+      <Suspense fallback={<Spinner />}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-12">
+          {products.map((product) => (
+            <ProductCard product={product} key={product.id} />
+          ))}
+        </div>
+      </Suspense>
     </section>
   );
 }

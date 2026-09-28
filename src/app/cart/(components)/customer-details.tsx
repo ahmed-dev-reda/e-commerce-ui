@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { customerSchema } from "@/data/schemas";
+import { motion } from "motion/react";
 
 type CustomerFormData = z.infer<typeof customerSchema>;
 
@@ -34,7 +35,12 @@ export default function CustomerDetails() {
   };
 
   return (
-    <section className="flex-1 lg:w-7/12 shadow-lg border border-gray-200 p-8 rounded-2xl flex flex-col gap-8">
+    <motion.section
+      initial={{ opacity: 0, y: -30 }}
+      animate={{ opacity: 100, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="flex-1 lg:w-7/12 shadow-lg border border-gray-200 p-8 rounded-2xl flex flex-col gap-8"
+    >
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         {/* Name */}
         <div className="flex flex-col gap-1">
@@ -154,6 +160,6 @@ export default function CustomerDetails() {
           <BiRightArrowAlt size={20} />
         </button>
       </form>
-    </section>
+    </motion.section>
   );
 }

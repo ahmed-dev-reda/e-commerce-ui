@@ -25,8 +25,8 @@ export default function Steps({ currentStep }: StepsProps) {
   const currentIndex = steps.findIndex((step) => step.id === currentStep);
 
   return (
-    <div className="w-full mb-8 sm:mb-10">
-      <div className="flex items-center justify-center w-full">
+    <div className="w-full mb-8 sm:mb-10 max-w-3xl mx-auto">
+      <div className="flex items-center justify-center w-full ">
         {steps.map((step, index) => {
           const isActive = index === currentIndex;
           const isCompleted = index < currentIndex;

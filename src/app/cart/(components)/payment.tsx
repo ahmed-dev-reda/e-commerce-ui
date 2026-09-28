@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { paymentSchema } from "@/data/schemas";
 import { resetCart } from "@/lib/features/cart/cart";
+import { motion } from "motion/react";
 
 type PaymentFormData = z.infer<typeof paymentSchema>;
 
@@ -55,7 +56,12 @@ export default function PaymentMethod() {
   };
 
   return (
-    <section className="w-full border border-gray-200 rounded-2xl shadow-lg overflow-hidden flex-1">
+    <motion.section
+      initial={{ opacity: 0, y: -30 }}
+      animate={{ opacity: 100, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="w-full border border-gray-200 rounded-2xl shadow-lg overflow-hidden flex-1"
+    >
       <div className="p-5 border-b">
         <div className="flex items-center gap-2">
           <CreditCard size={20} />
@@ -199,6 +205,6 @@ export default function PaymentMethod() {
           </Button>
         </div>
       </form>
-    </section>
+    </motion.section>
   );
 }

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { removeFromCart, updateQuantity } from "@/lib/features/cart/cart";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-
+import { motion } from "motion/react";
 export default function ProductsInCart() {
   const dispatch = useAppDispatch();
 
@@ -41,7 +41,12 @@ export default function ProductsInCart() {
   };
 
   return (
-    <section className="flex-1 rounded-2xl overflow-hidden shadow-lg border border-gray-200">
+    <motion.section
+      initial={{ opacity: 0, y: -30 }}
+      animate={{ opacity: 100, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="flex-1 rounded-2xl overflow-hidden shadow-lg border border-gray-200"
+    >
       <div className="border-b px-5 py-4">
         <h2 className="font-semibold">Cart Items</h2>
       </div>
@@ -178,6 +183,6 @@ export default function ProductsInCart() {
           </div>
         )}
       </div>
-    </section>
+    </motion.section>
   );
 }

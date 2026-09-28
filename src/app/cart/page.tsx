@@ -11,9 +11,5 @@ export default async function CartPage({
   const { step } = await searchParams;
 
   if (step === "completed") return <OrderCompleted />;
-  return (
-    <>
-      <CartPageClient step={step} />
-    </>
-  );
+  else return <CartPageClient step={step} />;
 }

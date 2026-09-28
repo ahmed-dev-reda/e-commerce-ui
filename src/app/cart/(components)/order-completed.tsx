@@ -8,7 +8,7 @@ export default function OrderCompleted() {
   const router = useRouter();
 
   return (
-    <div className="min-h-125 flex items-center justify-center">
+    <div className="h-screen max-h-[70vh] flex items-center justify-center">
       <div className="text-center">
         {/* Check Circle */}
         <motion.div

@@ -9,7 +9,6 @@ import Steps from "./(components)/steps";
 import CartDetails from "./(components)/cart-details";
 import PaymentMethod from "./(components)/payment";
 
-
 type CartPageClientProps = {
   step?: string;
 };
@@ -17,9 +16,7 @@ type CartPageClientProps = {
 export default function CartPageClient({ step = "cart" }: CartPageClientProps) {
   const cart = useAppSelector((state) => state.cart);
 
-  if (cart.items.length === 0) {
-    return <EmptyCart />;
-  }
+  if (cart.items.length === 0) return <EmptyCart />;
 
   return (
     <section className="container mx-auto py-12">
