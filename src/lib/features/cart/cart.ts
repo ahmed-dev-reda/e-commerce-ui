@@ -1,4 +1,4 @@
-import { ProductType } from "@/types";
+import { ProductType } from "@/data/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface CartItem extends ProductType {
@@ -26,7 +26,9 @@ const cartSlice = createSlice({
       state.items = action.payload;
       state.isHydrated = true;
     },
-
+    resetCart: (state) => {
+      state.items = [];
+    },
     setHydrated: (state) => {
       state.isHydrated = true;
     },
@@ -95,6 +97,7 @@ export const {
   removeFromCart,
   updateQuantity,
   setHydrated,
+  resetCart,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

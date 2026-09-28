@@ -1,4 +1,3 @@
-
 import Image from "next/legacy/image";
 import { Input } from "../ui/input";
 import { Bell, Home, Search } from "lucide-react";
@@ -6,9 +5,7 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import ShoppingCartIcon from "./shopping-cart-icon";
 
-
 export default function SiteHeader() {
-
   return (
     <header>
       <nav className="container mx-auto flex justify-between items-center py-4">
@@ -38,9 +35,6 @@ export default function SiteHeader() {
           </Button>
 
           <ShoppingCartIcon />
-          <Link href={"/auth/login"}>
-            <Button>Sign In</Button>
-          </Link>
         </div>
       </nav>
     </header>

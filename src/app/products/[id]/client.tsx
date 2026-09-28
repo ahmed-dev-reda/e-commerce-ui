@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { ProductType } from "@/types";
-import { Plus, ShoppingCart } from "lucide-react";
+import { ProductType } from "@/data/types";
+import { Plus } from "lucide-react";
 import { useAppDispatch } from "@/lib/hooks";
 import { addToCart } from "@/lib/features/cart/cart";
 import { toast } from "sonner";
@@ -206,24 +206,15 @@ export default function ClientProductPage({
         </div>
 
         {/* Actions */}
-        <div className="flex flex-col gap-2 mt-1">
-          <button
-            type="button"
-            className="w-full flex justify-center items-center gap-2 bg-[#1e293b] text-white py-2.5 text-sm font-semibold hover:bg-slate-800 transition cursor-pointer"
-            onClick={handleAddToCart}
-          >
-            <Plus size={17} />
-            Add to Cart
-          </button>
 
-          <button
-            type="button"
-            className="w-full flex justify-center items-center gap-2 border border-gray-300 bg-white text-gray-800 py-2.5 text-sm font-semibold hover:bg-gray-50 transition cursor-pointer"
-          >
-            <ShoppingCart size={17} />
-            Buy this Item
-          </button>
-        </div>
+        <button
+          type="button"
+          className="w-full flex justify-center items-center gap-2 bg-[#1e293b] text-white py-2.5 text-sm font-semibold hover:bg-slate-800 transition cursor-pointer"
+          onClick={handleAddToCart}
+        >
+          <Plus size={17} />
+          Add to Cart
+        </button>
 
         {/* Legal */}
         <p className="text-gray-500 text-xs leading-5">

@@ -11,20 +11,27 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: {
-    default: "Northwind — Fashion, electronics and home",
-    template: "%s · Northwind",
+    default: "TRENDLAMA — Fashion, electronics and home",
+    template: "%s · TRENDLAMA",
   },
   description:
     "Shop the latest in women's and men's fashion, electronics and home & living. Free shipping on orders over $50.",
+  icons: { icon: "/logo.png" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={cn("h-full", "antialiased", "font-sans", inter.variable)}
-    >
-      <body className="min-h-full px-4">
+    <html lang="en">
+      <body
+        className={cn(
+          "h-full",
+          "antialiased",
+          "font-sans",
+          inter.variable,
+          "min-h-full",
+          "px-4",
+        )}
+      >
         <StoreProvider>
           <SiteHeader />
           <main className="container mx-auto ">{children}</main>

@@ -1,16 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { ProductType } from "@/types";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { ProductType } from "@/data/types";
+import { useAppDispatch } from "@/lib/hooks";
 import { addToCart } from "@/lib/features/cart/cart";
 
 export default function ProductCard({ product }: { product: ProductType }) {
-  const cart = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
 
   const [productDetails, setProductDetails] = useState({
@@ -85,7 +84,7 @@ export default function ProductCard({ product }: { product: ProductType }) {
                   size: e.target.value,
                 }))
               }
-              className="h-7 min-w-[64px] cursor-pointer rounded-md border bg-background px-2 text-sm outline-none transition-colors focus:border-foreground"
+              className="h-7 min-w-16 cursor-pointer rounded-md border bg-background px-2 text-sm outline-none transition-colors focus:border-foreground"
             >
               {product.sizes.map((size) => (
                 <option key={size} value={size}>

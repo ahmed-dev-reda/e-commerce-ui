@@ -24,7 +24,7 @@ export default function ShoppingCartIcon() {
   const cartItems = cart.items.slice(0, 4);
 
   return (
-    <div className="relative">
+    <div className="relative mr-6">
       {/* Cart Button */}
       <button
         type="button"
@@ -34,8 +34,8 @@ export default function ShoppingCartIcon() {
         <ShoppingCart size={18} />
 
         {cartItemsCount > 0 && (
-          <span className="absolute z-10 right-0 -top-1 text-xs bg-amber-500 rounded-full size-4 flex items-center justify-center">
-            {cartItemsCount}
+          <span className="absolute z-10 -right-2 -top-2 text-xs bg-amber-500 rounded-full size-5 flex items-center justify-center">
+            {cartItemsCount < 10 ? cartItemsCount : "9+"}
           </span>
         )}
       </button>

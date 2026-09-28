@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
-import { products } from "@/components/layout/products-list";
+
 import ClientProductPage from "./client";
+import { products } from "@/data/temporaryData";
 
 export default async function ProductPage({
   params,
