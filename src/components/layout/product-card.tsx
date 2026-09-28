@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
@@ -18,7 +19,18 @@ export default function ProductCard({ product }: { product: ProductType }) {
     quantity: 1,
   });
 
+  const [imageLoading, setImageLoading] = useState(true);
+
   const image = product.images[productDetails.color];
+
+  function handleColorChange(color: string) {
+    setImageLoading(true);
+
+    setProductDetails((prev) => ({
+      ...prev,
+      color,
+    }));
+  }
 
   function handleAddToCart() {
     dispatch(
@@ -29,23 +41,35 @@ export default function ProductCard({ product }: { product: ProductType }) {
         selectedQuantity: productDetails.quantity,
       }),
     );
+
     toast.success(`${product.name} added to cart`);
   }
 
   return (
-    <div className="shadow-lg rounded-lg overflow-hidden">
+    <div className="overflow-hidden rounded-lg shadow-lg">
       {/* Image */}
       <Link href={`/products/${product.id}`}>
-        <div className="relative aspect-2/3">
-          <img
-            key={image}
+        <div className="group relative aspect-[2/3] overflow-hidden bg-gray-100">
+          {imageLoading && (
+            <div className="absolute inset-0 z-10 flex items-center justify-center bg-gray-100">
+              <div className="size-8 animate-spin rounded-full border-4 border-gray-300 border-t-black" />
+            </div>
+          )}
+
+          <Image
             src={image}
             alt={`${product.name} - ${productDetails.color}`}
-            className="object-cover hover:scale-105 transition-all duration-300"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+            onLoad={() => setImageLoading(false)}
+            onError={() => setImageLoading(false)}
+            className={`object-cover transition-all duration-300 group-hover:scale-105 ${
+              imageLoading ? "opacity-0" : "opacity-100"
+            }`}
           />
 
           {/* Quick view */}
-          <div className="absolute inset-x-0 bottom-3 flex justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <div className="absolute inset-x-0 bottom-3 z-20 flex justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <span className="rounded-full bg-white px-4 py-2 text-sm font-medium text-black shadow-md">
               View Product
             </span>
@@ -55,7 +79,6 @@ export default function ProductCard({ product }: { product: ProductType }) {
 
       {/* Product Info */}
       <div className="gap-4 p-5">
-        {/* Title */}
         <div className="space-y-1">
           <h3 className="text-lg font-semibold">{product.name}</h3>
 
@@ -64,8 +87,7 @@ export default function ProductCard({ product }: { product: ProductType }) {
           </p>
         </div>
 
-        {/* Options */}
-        <div className="flex items-end gap-7 mt-4">
+        <div className="mt-4 flex items-end gap-7">
           {/* Size */}
           <div className="space-y-2">
             <label
@@ -110,12 +132,7 @@ export default function ProductCard({ product }: { product: ProductType }) {
                     type="button"
                     aria-label={`Select ${color}`}
                     aria-pressed={isSelected}
-                    onClick={() =>
-                      setProductDetails((prev) => ({
-                        ...prev,
-                        color,
-                      }))
-                    }
+                    onClick={() => handleColorChange(color)}
                     className="relative flex size-5 items-center justify-center rounded-full transition-transform duration-200"
                   >
                     <span
@@ -136,12 +153,10 @@ export default function ProductCard({ product }: { product: ProductType }) {
 
       {/* Footer */}
       <div className="flex items-center justify-between p-5 pt-0">
-        {/* Price */}
         <span className="text-lg font-semibold">
           ${product.price.toFixed(2)}
         </span>
 
-        {/* Add to cart */}
         <Button
           onClick={handleAddToCart}
           type="button"
